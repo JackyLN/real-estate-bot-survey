@@ -34,10 +34,10 @@ class WebhookServices {
       }
       this.callSendAPI(id, response, this.access_token);
 
-      let surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
-      surveyServices.question_no = 1;
+      // let surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
+      // surveyServices.question_no = 1;
   
-      surveyServices.start();
+      // surveyServices.start();
     }
   }
 
@@ -57,7 +57,7 @@ class WebhookServices {
   
     // Send the HTTP request to the Messenger Platform
     this.request({
-      "uri": "https://graph.facebook.com/v2.6/me/messages",
+      "uri": "https://graph.facebook.com/v7.0/me/messages",
       "qs": { "access_token": PAGE_ACCESS_TOKEN },
       "method": "POST",
       "json": request_body
