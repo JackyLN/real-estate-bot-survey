@@ -34,7 +34,7 @@ class WebhookServices {
     }
     this.callSendAPI(id, response, this.access_token);
 
-    surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
+    let surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
     surveyServices.question_no = 1;
 
     surveyServices.start();
