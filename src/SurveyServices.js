@@ -18,12 +18,14 @@ class SurveyServices {
   }
 
   start() {
+    console.log('inside start SurveyService');
     if (question_no != 0 && question_no < this.list.length) {
       this.callSendAPI(sender_psid, this.list[this.question_no - 1], this.access_token);
     }
   }
 
   callSendAPI(id, response, access_token) { 
+    console.log('inside start callSendAPI');
     const PAGE_ACCESS_TOKEN = access_token;
     let request_body = {
       "recipient": {
