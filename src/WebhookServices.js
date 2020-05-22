@@ -13,6 +13,8 @@ class WebhookServices {
   } 
 
   start() {
+    console.log(webhook_event.sender_psid);
+    console.log(webhook_event.message.text);
     if (this._webhook_event.message) {
       this.handleMessage(this.sender_psid, this._webhook_event.message);        
     } else if (this._webhook_event.postback) {
@@ -40,6 +42,7 @@ class WebhookServices {
   }
 
   callSendAPI(id, response, access_token) {
+    console.log(id);
     const PAGE_ACCESS_TOKEN = access_token;
     let request_body = {
       "recipient": {
