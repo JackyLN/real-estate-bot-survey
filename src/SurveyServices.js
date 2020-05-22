@@ -7,6 +7,7 @@ class SurveyServices {
     this.sender_psid = sender_psid;
     this.access_token = access_token;
     this.list = require('./SurveyList');
+    this.request = require('request');
   }
 
   get question_no() {
