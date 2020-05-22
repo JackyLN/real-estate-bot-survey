@@ -22,7 +22,7 @@ class WebhookServices {
 
   handleMessage(id, message) {
     let response;
-    if (message != "Get Started") {
+    if (message.text != "Get Started") {
       response = {
         "text": `Incorrect command, please type "Get Started" to start doing survey!`
       }
