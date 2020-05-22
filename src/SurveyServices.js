@@ -19,8 +19,8 @@ class SurveyServices {
 
   start() {
     console.log('inside start SurveyService');
-    if (question_no != 0 && question_no < this.list.length) {
-      this.callSendAPI(sender_psid, this.list[this.question_no - 1], this.access_token);
+    if (_question_no != 0 && _question_no < this.list.length) {
+      this.callSendAPI(sender_psid, this.list[this._question_no - 1], this.access_token);
     }
   }
 
