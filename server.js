@@ -2,6 +2,7 @@
 
 // Imports dependencies and set up http server
 const
+  logger = require('./winston'),
   request = require('request'),
   express = require('express'),
   bodyParser = require('body-parser'),
@@ -10,9 +11,12 @@ const
   app = express().use(bodyParser.json()); // creates express http server
 
 dotenv.config();
-var logger = require('./winston');
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const
+  PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN,
+  VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+
+const WebhookServices = require('./src/WebhookServices');
+let webhookService = new WebhookServices(null, PAGE_ACCESS_TOKEN);
 
 //app policy
 app.get('/policy', function (req, res) {
@@ -50,7 +54,9 @@ app.post('/webhook', (req, res) => {
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);        
+        //handleMessage(sender_psid, webhook_event.message);        
+        webhookService.webhook_event = webhook_event;
+        webhookService.start();
       } else if (webhook_event.postback) {
         handlePostback(sender_psid, webhook_event.postback);
       }
@@ -155,9 +161,7 @@ function handlePostback(sender_psid, received_postback) {
 }
 
 function callSendAPI(sender_psid, response) {
-  // Construct the message body
-  console.log("sender_psid: " + sender_psid);
-  console.log(response);
+  // Construct the message body 
   let request_body = {
     "recipient": {
       "id": sender_psid
