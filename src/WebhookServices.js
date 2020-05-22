@@ -6,6 +6,7 @@ class WebhookServices {
     this.sender_psid = webhook_event.sender.id;
     this.access_token = access_token;
     this.request = require('request');
+    this.SurveyServices = require('./SurveyServices');
   }
 
   set webhook_event(value) {
@@ -31,8 +32,12 @@ class WebhookServices {
         "text": `Hello there, thanks for your time, let's start doing a short survey!`
       }
     }
-
     this.callSendAPI(id, response, this.access_token);
+
+    surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
+    surveyServices.question_no = 1;
+
+    surveyServices.start();
   }
 
   handlePostback() {
