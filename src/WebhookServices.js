@@ -14,9 +14,9 @@ class WebhookServices {
 
   start() {
     if (this._webhook_event.message) {
-      handleMessage(this.sender_psid, this._webhook_event.message);        
+      this.handleMessage(this.sender_psid, this._webhook_event.message);        
     } else if (this._webhook_event.postback) {
-      handlePostback(this.sender_psid, this._webhook_event.postback);
+      //this.handlePostback(this.sender_psid, this._webhook_event.postback);
     }
   }
 
