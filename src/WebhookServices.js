@@ -27,17 +27,18 @@ class WebhookServices {
       response = {
         "text": `Incorrect command, please type "Get Started" to start doing survey!`
       }
+      this.callSendAPI(id, response, this.access_token);
     } else {
       response = {
         "text": `Hello there, thanks for your time, let's start doing a short survey!`
       }
+      this.callSendAPI(id, response, this.access_token);
+
+      let surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
+      surveyServices.question_no = 1;
+  
+      surveyServices.start();
     }
-    this.callSendAPI(id, response, this.access_token);
-
-    let surveyServices = new this.SurveyServices(this.sender_psid, this.access_token);
-    surveyServices.question_no = 1;
-
-    surveyServices.start();
   }
 
   handlePostback() {
