@@ -2,21 +2,21 @@
 
 class WebhookServices {
   constructor (webhook_event, access_token) {
-    this.webhook_event = webhook_event;
+    this._webhook_event = webhook_event;
     this.sender_psid = webhook_event.sender.id;
     this.access_token = access_token;
     this.request = require('request');
   }
 
   set webhook_event(value) {
-    this.webhook_event = value;
+    this._webhook_event = value;
   } 
 
   start() {
-    if (this.webhook_event.message) {
-      handleMessage(this.sender_psid, this.webhook_event.message);        
-    } else if (this.webhook_event.postback) {
-      handlePostback(this.sender_psid, this.webhook_event.postback);
+    if (this._webhook_event.message) {
+      handleMessage(this.sender_psid, this._webhook_event.message);        
+    } else if (this._webhook_event.postback) {
+      handlePostback(this.sender_psid, this._webhook_event.postback);
     }
   }
 

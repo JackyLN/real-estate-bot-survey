@@ -16,7 +16,6 @@ const
   VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 const WebhookServices = require('./src/WebhookServices');
-let webhookService = new WebhookServices(null, PAGE_ACCESS_TOKEN);
 
 //app policy
 app.get('/policy', function (req, res) {
@@ -50,6 +49,11 @@ app.post('/webhook', (req, res) => {
       
       let sender_psid = webhook_event.sender.id;
       logger.info('Sender ID: ' + sender_psid);
+
+
+      let webhookService = new WebhookServices(webhook_event, PAGE_ACCESS_TOKEN);
+
+
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
