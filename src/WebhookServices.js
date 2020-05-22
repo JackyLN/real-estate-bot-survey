@@ -32,15 +32,14 @@ class WebhookServices {
       }
     }
 
-    this.callSendAPI(id, response);
+    this.callSendAPI(id, response, this.access_token);
   }
 
   handlePostback() {
 
   }
 
-  callSendAPI(id, response, access_token) {
-    console.log(id);
+  callSendAPI(id, response, access_token) { 
     const PAGE_ACCESS_TOKEN = access_token;
     let request_body = {
       "recipient": {
