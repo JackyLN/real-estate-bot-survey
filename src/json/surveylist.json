@@ -1,0 +1,18 @@
+{
+  "get_started": {
+    "welcome": "Hi {{input}}! Welcome to Real Estate Survey",
+    "guidance": "What can we do today?",
+    "startsurvey": "Doing a short survey",
+    "help": ""
+  },
+
+  "payload": {
+    "startsurvey": "START_SURVEY",
+    "help": "HELP"
+  },
+
+  "fallback": {
+    "any": "Sorry, but I don’t recognize \"{{input}}\". Please try \"Get Started\" to start the survey.",
+    "help": ""
+  }
+}
