@@ -34,7 +34,6 @@ class Response {
       });
     }
 
-    console.log(response);
     return response;
   }
 
@@ -51,7 +50,7 @@ class Response {
     let response = {
       text: text.replace(regex, input)
     }
-    console.log(response);
+
     return response;
   }
   

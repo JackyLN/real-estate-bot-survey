@@ -11,14 +11,15 @@ class GraphAPI {
       {
         uri: `${config.platform}/me/messages`,
         qs: {
-          access_token: config.pageAccesToken
+          access_token: config.graph.token
         },
         method: "POST",
         json: requestBody
-      },
-      error => {
-        if (error) {
-          console.error("Unable to send message:", error);
+      }, (err, res, body) => {
+        if(!err) {
+          console.log('message sent!');
+        } else {
+          console.log("Unable to send message: " + err);
         }
       }
     );

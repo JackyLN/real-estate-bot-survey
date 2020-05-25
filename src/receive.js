@@ -25,7 +25,6 @@ class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          console.log(responses);
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
@@ -84,7 +83,6 @@ class Receive {
         ])
       ];
     }
-
     return response;
   }
 
@@ -143,6 +141,7 @@ class Receive {
       },
       message: response
     };
+
 
     // Check if there is persona id in the response
     if ("persona_id" in response) {
