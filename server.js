@@ -1,263 +1,117 @@
-// 'use strict';
+'use strict';
 
-// // Imports dependencies and set up http server
-// const
-//   logger = require('./winston'),
-//   request = require('request'),
-//   express = require('express'),
-//   bodyParser = require('body-parser'),
-//   dotenv = require('dotenv'),
-//   path = require('path'),
-//   app = express().use(bodyParser.json()); // creates express http server
+// Imports dependencies and set up http server
+const
+  logger = require('./winston'),
+  express = require('express'),
+  bodyParser = require('body-parser'),
+  path = require('path'),
+  config = require('./config'),
+  User = require('./src/model/user'),
+  Receive = require('./src/receive'),
+  app = express().use(bodyParser.json()); // creates express http server
 
-// dotenv.config();
-// const
-//   PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN,
-//   VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+let users = {};
+//app policy
+app.get('/policy', function (req, res) {
+  res.sendFile(path.join(__dirname + '/policy.html'));
+})
 
-// const WebhookServices = require('./src/WebhookServices');
+// Creates the endpoint for our webhook 
+app.post("/webhook", (req, res) => {
+  let body = req.body;
+  // Checks if this is an event from a page subscription
+  if (body.object === "page") {
+    // Returns a '200 OK' response to all requests
+    res.status(200).send("EVENT_RECEIVED");
 
-// //app policy
-// app.get('/policy', function (req, res) {
-//   res.sendFile(path.join(__dirname + '/policy.html'));
-// })
+    // Iterates over each entry - there may be multiple if batched
+    body.entry.forEach(function (entry) {
+      if ("changes" in entry) {
+        // Handle Page Changes event
+        let receiveMessage = new Receive();
+        if (entry.changes[0].field === "feed") {
+          let change = entry.changes[0].value;
+          switch (change.item) {
+            case "post":
+              return receiveMessage.handlePrivateReply(
+                "post_id",
+                change.post_id
+              );
+              break;
+            case "comment":
+              return receiveMessage.handlePrivateReply(
+                "commentgity _id",
+                change.comment_id
+              );
+              break;
+            default:
+              console.log('Unsupported feed change type.');
+              return;
+          }
+        }
+      }
 
-// // Creates the endpoint for our webhook 
-// // app.post('/webhook', (req, res) => {  
- 
-// //   let body = req.body;
+      // Gets the body of the webhook event
+      let webhookEvent = entry.messaging[0];
+      // console.log(webhookEvent);
 
-// //   // Checks this is an event from a page subscription
-// //   if (body.object === 'page') {
+      // Discard uninteresting events
+      if ("read" in webhookEvent) {
+        // console.log("Got a read event");
+        return;
+      }
 
-// //     // Iterates over each entry - there may be multiple if batched
-// //     body.entry.forEach(function(entry) {
+      if ("delivery" in webhookEvent) {
+        // console.log("Got a delivery event");
+        return;
+      }
+
+      // Get the sender PSID
+      let senderPsid = webhookEvent.sender.id;
+
+      let defaultUser = new User(senderPsid);
+      defaultUser.setDefault();
+      let receiveMessage = new Receive(defaultUser, webhookEvent);
       
-// //       let webhook_event = entry.messaging[0];
-// //       console.log(webhook_event);
-// //       logger.info('EVENT_RECEIVED');
-// //       //logger.info(webhook_event.message.text);
-      
-// //       let sender_psid = webhook_event.sender.id;
-// //       logger.info('Sender ID: ' + sender_psid);
-
-
-// //       let webhookService = new WebhookServices(webhook_event, PAGE_ACCESS_TOKEN);
-
-
-
-// //       // Check if the event is a message or postback and
-// //       // pass the event to the appropriate handler function
-// //       if (webhook_event.message) {
-// //         //handleMessage(sender_psid, webhook_event.message);        
-// //         webhookService.webhook_event = webhook_event;
-// //         webhookService.start();
-// //       } else if (webhook_event.postback) {
-// //         handlePostback(sender_psid, webhook_event.postback);
-// //       }
-
-// //     });
-
-// //     // Returns a '200 OK' response to all requests
-// //     res.status(200).send('EVENT_RECEIVED');
-// //   } else {
-// //     // Returns a '404 Not Found' if event is not from a page subscription
-// //     res.sendStatus(404);
-// //   }
-
-// // });
-
-// // Adds support for GET requests to our webhook
-// app.get('/webhook', (req, res) => {
-    
-//   // Parse the query params
-//   let mode = req.query['hub.mode'];
-//   let token = req.query['hub.verify_token'];
-//   let challenge = req.query['hub.challenge'];
-    
-//   // Checks if a token and mode is in the query string of the request
-//   if (mode && token) {
-  
-//     // Checks the mode and token sent is correct
-//     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      
-//       // Responds with the challenge token from the request
-//       //console.log('WEBHOOK_VERIFIED');
-//       //
-//       logger.info('WEBHOOK_VERIFIED');
-
-//       res.status(200).send(challenge);
-    
-//     } else {
-//       // Responds with '403 Forbidden' if verify tokens do not match
-//       res.sendStatus(403);      
-//     }
-//   }
-// });
-
-// function handleMessage(sender_psid, received_message) {
-//   let response;
-  
-//   // Checks if the message contains text
-//   if (received_message.text) {    
-//     // Create the payload for a basic text message, which
-//     // will be added to the body of our request to the Send API
-//     response = {
-//       "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-//     }
-//   } else if (received_message.attachments) {
-//     // Get the URL of the message attachment
-//     let attachment_url = received_message.attachments[0].payload.url;
-//     response = {
-//       "attachment": {
-//         "type": "template",
-//         "payload": {
-//           "template_type": "generic",
-//           "elements": [{
-//             "title": "Is this the right picture?",
-//             "subtitle": "Tap a button to answer.",
-//             "image_url": attachment_url,
-//             "buttons": [
-//               {
-//                 "type": "postback",
-//                 "title": "Yes!",
-//                 "payload": "yes",
-//               },
-//               {
-//                 "type": "postback",
-//                 "title": "No!",
-//                 "payload": "no",
-//               }
-//             ],
-//           }]
-//         }
-//       }
-//     }
-//   } 
-  
-//   // Send the response message
-//   callSendAPI(sender_psid, response);    
-// }
-
-// function handlePostback(sender_psid, received_postback) {
-//   logger.info('ok')
-//    let response;
-//   // Get the payload for the postback
-//   let payload = received_postback.payload;
-
-//   // Set the response based on the postback payload
-//   if (payload === 'yes') {
-//     response = { "text": "Thanks!" }
-//   } else if (payload === 'no') {
-//     response = { "text": "Oops, try sending another image." }
-//   }
-//   // Send the message to acknowledge the postback
-//   callSendAPI(sender_psid, response);
-// }
-
-// function callSendAPI(sender_psid, response) {
-//   // Construct the message body 
-//   let request_body = {
-//     "recipient": {
-//       "id": sender_psid
-//     },
-//     "message": response
-//   }
-
-//   // Send the HTTP request to the Messenger Platform
-//   request({
-//     "uri": "https://graph.facebook.com/v7.0/me/messages",
-//     "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//     "method": "POST",
-//     "json": request_body
-//   }, (err, res, body) => {
-//     if (!err) {
-//       console.log('message sent!')
-//     } else {
-//       console.error("Unable to send message:" + err);
-//     }
-//   }); 
-// }
-
-// let config = require("./config/config.js");
-
-// const messenger_client = new MessengerSDK.Client(config.client);
-// const webhook = new MessengerSDK.Webhook(config.webhook);
-
-// app.use(express.static('logs'));
-// // Sets server port and logs message on success
-// app.listen(process.env.PORT || 1335, () => {
-//   logger.info('webhook is listening')
-//   console.log('webhook is listening')}
-// );
-
-
-"use strict";
-
-const Bot = require("./src/bot.js");
-const FBA = require("./src/fba.js");
-const MessengerSDK = require("messenger-node");
-
-let config, webhook_config, client_config, fba_config;
-
-try {
-    console.log("Trying to read local configuration...");
-    config = require("./config.js");
-} catch (e) {
-    console.log("Error while reading local configuration, reading environment variables instead.");
-    config = {
-        webhook: {
-            "endpoint": process.env.MESSENGER_ENDPOINT,
-            "verify_token": process.env.MESSENGER_VERIFY_TOKEN,
-            "port": process.env.PORT,
-            "app_secret": process.env.MESSENGER_APP_SECRET
-        },
-        client: {
-            "page_token": process.env.MESSENGER_PAGE_ACCESS_TOKEN,
-        },
-        fba_config: {
-            "app_id": process.env.APP_ID,
-            "page_id": process.env.PAGE_ID,
-        },
-        survey_type: process.env.SURVEY_TYPE,
-        customer_service_app_id: process.env.CUSTOMER_SERVICE_APP_ID
-    };
-}
-
-const fba_client = new FBA(config.fba);
-const messenger_client = new MessengerSDK.Client(config.client);
-const webhook = new MessengerSDK.Webhook(config.webhook);
-
-const bot_config = {
-    "messenger_client": messenger_client,
-    "fba_client": fba_client,
-    "customer_service_app_id": config.customer_service_app_id,
-    "survey_type": config.survey_type,
-};
-
-const bot = new Bot(bot_config);
-
-webhook.on("messages", (event_type, sender_info, webhook_event) => {
-    logEvent(event_type, sender_info, webhook_event);
-    bot.handleText(event_type, sender_info, webhook_event);
+      return receiveMessage.handleMessage();
+    });
+  } else {
+    // Returns a '404 Not Found' if event is not from a page subscription
+    res.sendStatus(404);
+  }
 });
 
-webhook.on("messaging_postbacks", (event_type, sender_info, webhook_event) => {
-    logEvent(event_type, sender_info, webhook_event);
-    bot.handleText(event_type, sender_info, webhook_event);
+// Adds support for GET requests to our webhook
+app.get('/webhook', (req, res) => {
+
+  // Parse the query params
+  let mode = req.query['hub.mode'];
+  let token = req.query['hub.verify_token'];
+  let challenge = req.query['hub.challenge'];
+
+  // Checks if a token and mode is in the query string of the request
+  if (mode && token) {
+    // Checks the mode and token sent is correct
+    if (mode === 'subscribe' && token === config.webhook.verify_token) {
+
+      // Responds with the challenge token from the request
+      //console.log('WEBHOOK_VERIFIED');
+      //
+      logger.info('WEBHOOK_VERIFIED');
+
+      res.status(200).send(challenge);
+
+    } else {
+      // Responds with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
+    }
+  }
 });
 
-webhook.on("messaging_handovers", (event_type, sender_info, webhook_event) => {
-    logEvent(event_type, sender_info, webhook_event);
-    bot.handleHandover(event_type, sender_info, webhook_event);
+app.use(express.static('logs'));
+// Sets server port and logs message on success
+app.listen(config.webhook.PORT || 1335, () => {
+  logger.info('webhook is listening')
+  console.log('webhook is listening')
 });
-
-webhook.on("standby", (event_type, sender_info, webhook_event) => {
-    logEvent(event_type, sender_info, webhook_event);
-    bot.handleStandby(event_type, sender_info, webhook_event);
-});
-
-function logEvent(event_type, sender_info, webhook_event) {
-    console.log("=== Webhook event: " + JSON.stringify(event_type) + " ===");
-    console.log(webhook_event);
-};

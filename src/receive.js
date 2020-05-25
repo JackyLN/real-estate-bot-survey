@@ -1,7 +1,9 @@
 'use strict';
 
-const surveylist = require("./json/surveylist.json"),
-Response = require("./response");
+const list = require("./json/surveylist.json"),
+  Response = require("./response"),
+  Survey = require("./survey"),
+  GraphApi = require("./graphapi");
 
 class Receive {
   constructor(user, webhookEvent) {
@@ -12,7 +14,6 @@ class Receive {
 
   handleMessage() {
     let event = this.webhookEvent;
-
     let responses;
 
     try {
@@ -24,6 +25,7 @@ class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
+          console.log(responses);
           responses = this.handleTextMessage();
         }
       } else if (event.postback) {
@@ -52,6 +54,11 @@ class Receive {
 
   handleTextMessage() {
 
+    console.log(
+      "Received text:",
+      `${this.webhookEvent.message.text} for ${this.user.psid}`
+    );
+
     // check greeting is here and is confident
     let greeting = this.firstEntity(this.webhookEvent.message.nlp, "greetings");
 
@@ -59,21 +66,8 @@ class Receive {
 
     let response;
 
-    if (
-      (greeting && greeting.confidence > 0.8) ||
-      message.includes("start over")
-    ) {
+    if ((greeting && greeting.confidence > 0.8) || message.includes("start over")) {
       response = Response.genNuxMessage(this.user);
-      //TODO
-
-    // } else if (Number(message)) {
-    //   response = Order.handlePayload("ORDER_NUMBER");
-    // } else if (message.includes("#")) {
-    //   response = Survey.handlePayload("CSAT_SUGGESTION");
-    // } else if (message.includes(i18n.__("care.help").toLowerCase())) {
-    //   let care = new Care(this.user, this.webhookEvent);
-    //   response = care.handlePayload("CARE_HELP");
-      
     } else {
       response = [
         Response.genTextWithInput(list.fallback.any, this.webhookEvent.message.text),
@@ -118,50 +112,15 @@ class Receive {
   }
 
   handlePayload(payload) {
-    console.log("Received Payload:", `${payload} for ${this.user.psid}`);
-
-    // Log CTA event in FBA
-    GraphAPi.callFBAEventsAPI(this.user.psid, payload);
-
     let response;
 
-    // Set the response based on the payload
-    if (
-      payload === "GET_STARTED" ||
-      payload === "DEVDOCS" ||
-      payload === "GITHUB"
-    ) {
-      response = Response.genNuxMessage(this.user);
-    } else if (payload.includes("CURATION") || payload.includes("COUPON")) {
-      let curation = new Curation(this.user, this.webhookEvent);
-      response = curation.handlePayload(payload);
-    } else if (payload.includes("CARE")) {
-      let care = new Care(this.user, this.webhookEvent);
-      response = care.handlePayload(payload);
-    } else if (payload.includes("ORDER")) {
-      response = Order.handlePayload(payload);
-    } else if (payload.includes("CSAT")) {
+    if (payload === list.payload.help) {
+      response = list.asnwer.helpagent;
+    }
+    else if (payload === list.payload.startsurvey || payload.includes("SURVEY")) {
       response = Survey.handlePayload(payload);
-    } else if (payload.includes("CHAT-PLUGIN")) {
-      response = [
-        Response.genText(i18n.__("chat_plugin.prompt")),
-        Response.genText(i18n.__("get_started.guidance")),
-        Response.genQuickReply(i18n.__("get_started.help"), [
-          {
-            title: i18n.__("care.order"),
-            payload: "CARE_ORDER"
-          },
-          {
-            title: i18n.__("care.billing"),
-            payload: "CARE_BILLING"
-          },
-          {
-            title: i18n.__("care.other"),
-            payload: "CARE_OTHER"
-          }
-        ])
-      ];
-    } else {
+    }
+    else {
       response = {
         text: `This is a default postback message for payload: ${payload}!`
       };
@@ -199,7 +158,7 @@ class Receive {
       };
     }
 
-    setTimeout(() => GraphAPi.callSendAPI(requestBody), delay);
+    setTimeout(() => GraphApi.callSendAPI(requestBody), delay);
   }
 }
 

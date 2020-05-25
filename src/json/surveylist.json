@@ -3,7 +3,7 @@
     "welcome": "Hi {{input}}! Welcome to Real Estate Survey",
     "guidance": "What can we do today?",
     "startsurvey": "Doing a short survey",
-    "help": ""
+    "help": "Talk to an agent"
   },
 
   "payload": {
@@ -11,8 +11,149 @@
     "help": "HELP"
   },
 
+  "asnwer": {
+    "helpagent": "An agent will contact you shortly."
+  },
+
+  "surveydetails": [
+    {
+      "text": "1. Which source of information do you use while choosing real estate property?",
+      "payload": "Q1",
+      "nextpayload": "Q2",
+      "replies": [
+        {
+          "title": "Brokers",
+          "payload": "SURVEY_Q1_A"
+        },
+        {
+          "title": "Family/Friends",
+          "payload": "SURVEY_Q1_B"
+        },
+        {
+          "title": "Real Estate advertisement",
+          "payload": "SURVEY_Q1_C"
+        },
+        {
+          "title": "Internet",
+          "payload": "SURVEY_Q1_D"
+        },
+        {
+          "title": "Other",
+          "payload": "SURVEY_Q1_E"
+        }
+      ]
+    },
+    {
+      "text": "2. Do you own a property?",
+      "payload": "Q2",
+      "nextpayload": "Q3",
+      "replies": [
+        {
+          "title": "Yes",
+          "payload": "SURVEY_Q2_A"
+        },
+        {
+          "title": "No",
+          "payload": "SURVEY_Q2_B"
+        }
+      ]
+    },
+    {
+      "text": "3. Which type of property do you own?",
+      "payload": "Q3",
+      "nextpayload": "Q4",
+      "replies": [
+        {
+          "title": "Bungalow",
+          "payload": "SURVEY_Q3_A"
+        },
+        {
+          "title": "Apartment",
+          "payload": "SURVEY_Q3_B"
+        },
+        {
+          "title": "Rowhouse",
+          "payload": "SURVEY_Q3_C"
+        },
+        {
+          "title": "Mobile home",
+          "payload": "SURVEY_Q3_D"
+        },
+        {
+          "title": "Townhouse",
+          "payload": "SURVEY_Q3_E"
+        },
+        {
+          "title": "Other",
+          "payload": "SURVEY_Q3_F"
+        }
+      ]
+    },
+    {
+      "text": "4. Have you seen any homes/investment properties that you are interested in?",
+      "payload": "Q4",
+      "nextpayload": "Q5",
+      "replies": [
+        {
+          "title": "Yes",
+          "payload": "SURVEY_Q4_A"
+        },
+        {
+          "title": "No",
+          "payload": "SURVEY_Q4_B"
+        }
+      ]
+    },
+    {
+      "text": "5. If you get the right property will you be able to make a decision immediately?",
+      "payload": "Q5",
+      "nextpayload": "Q6",
+      "replies": [
+        {
+          "title": "Yes",
+          "payload": "SURVEY_Q5_A"
+        },
+        {
+          "title": "Maybe",
+          "payload": "SURVEY_Q5_B"
+        },
+        {
+          "title": "No",
+          "payload": "SURVEY_Q5_C"
+        }
+      ]
+    },
+    {
+      "text": "6. What is the price range of the property you are willing to consider?",
+      "payload": "Q6",
+      "replies": [
+        {
+          "title": "$210,000- $250,000",
+          "payload": "SURVEY_Q6_A"
+        },
+        {
+          "title": "$260,000- $300,000",
+          "payload": "SURVEY_Q6_B"
+        },
+        {
+          "title": "$310,000- $350,000",
+          "payload": "SURVEY_Q6_C"
+        },
+        {
+          "title": "$360,000- $400,000",
+          "payload": "SURVEY_Q6_D"
+        },
+        {
+          "title": "Above $400,000",
+          "payload": "SURVEY_Q6_E"
+        }
+      ]
+    }
+  ],
+
   "fallback": {
     "any": "Sorry, but I don’t recognize \"{{input}}\". Please try \"Get Started\" to start the survey.",
+    "end": "Thank you for your time - Your survey is submited to our system",
     "help": ""
   }
 }

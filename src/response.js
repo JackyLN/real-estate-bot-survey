@@ -3,10 +3,6 @@
 const list = require('./json/surveylist.json');
 
 class Response {
-  constructor() {
-
-  }
-
   static genNuxMessage(user) {
     let welcome = this.genTextWithInput(list.get_started.welcome, user.firstName);
 
@@ -38,6 +34,7 @@ class Response {
       });
     }
 
+    console.log(response);
     return response;
   }
 
@@ -54,7 +51,7 @@ class Response {
     let response = {
       text: text.replace(regex, input)
     }
-
+    console.log(response);
     return response;
   }
   
