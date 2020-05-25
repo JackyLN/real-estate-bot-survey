@@ -17,7 +17,7 @@ class GraphAPI {
         json: requestBody
       }, (err, res, body) => {
         if(!err) {
-          console.log('message sent!');
+          //console.log('message sent!');
         } else {
           console.log("Unable to send message: " + err);
         }

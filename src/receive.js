@@ -113,7 +113,7 @@ class Receive {
     let response;
 
     if (payload === list.payload.help) {
-      response = list.asnwer.helpagent;
+      response = Response.genText(list.get_started.helpagent);
     }
     else if (payload === list.payload.startsurvey || payload.includes("SURVEY")) {
       response = Survey.handlePayload(payload);

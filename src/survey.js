@@ -4,21 +4,18 @@ const list = require('./json/surveylist.json'),
   Response = require('./response');
 
 class Survey {
-  constructor(user, webhookEvent) {
-    this.user = user;
-    this.webhookEvent = webhookEvent;
-  }
 
-  handlePayload(payload) {
+  static handlePayload(payload) {
     let response;
 
     //FIRST QUESTION
     if (payload === list.payload.startsurvey) {
       let answer = list.surveydetails[0].replies;
-      response = Response.genQuickReply(list.surveydetails[0],
+      response = Response.genQuickReply(list.surveydetails[0].text,
         answer
       );
     }
+    //THE REST
     else if (payload.includes("SURVEY")) {
 
       let surveydetails = list.surveydetails;
@@ -43,7 +40,7 @@ class Survey {
         response = Response.genText(list.fallback.end);
       }
     }
-    
+
     return response;
   }
 }

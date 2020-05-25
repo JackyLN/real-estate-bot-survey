@@ -3,16 +3,13 @@
     "welcome": "Hi {{input}}! Welcome to Real Estate Survey",
     "guidance": "What can we do today?",
     "startsurvey": "Doing a short survey",
-    "help": "Talk to an agent"
+    "help": "Talk to an agent",
+    "helpagent": "An agent will contact you shortly."
   },
 
   "payload": {
     "startsurvey": "START_SURVEY",
     "help": "HELP"
-  },
-
-  "asnwer": {
-    "helpagent": "An agent will contact you shortly."
   },
 
   "surveydetails": [
@@ -152,7 +149,7 @@
   ],
 
   "fallback": {
-    "any": "Sorry, but I don’t recognize \"{{input}}\". Please try \"Get Started\" to start the survey.",
+    "any": "Sorry, but I don’t recognize \"{{input}}\".",
     "end": "Thank you for your time - Your survey is submited to our system",
     "help": ""
   }
