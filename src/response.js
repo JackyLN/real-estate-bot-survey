@@ -47,7 +47,7 @@ class Response {
   }
 
   static genTextWithInput(text, input) {
-    const regex = `/{{input}}/g`;
+    const regex = /{{input}}/g;
     let response = {
       text: text.replace(regex, input)
     }
