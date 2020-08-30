@@ -74,8 +74,9 @@ app.post("/webhook", (req, res) => {
       logger.info("Webhook event from PSID:" + senderPsid);
 
       let userprofile = GraphApi.getUserProfile(senderPsid);
-      let user = new User();
+      let user = new User(senderPsid);
       user.setProfile(userprofile);
+      console.log(user);
 
       let receiveMessage = new Receive(user, webhookEvent);
 
