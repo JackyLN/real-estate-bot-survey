@@ -77,9 +77,11 @@ app.post("/webhook", (req, res) => {
       let user = new User();
       user.setProfile(userprofile);
 
+      let receiveMessage = new Receive(user, webhookEvent);
+
       //let defaultUser = new User(senderPsid);
       //defaultUser.setDefault();
-      let receiveMessage = new Receive(defaultUser, webhookEvent);
+      //let receiveMessage = new Receive(defaultUser, webhookEvent);
       
       return receiveMessage.handleMessage();
     });
