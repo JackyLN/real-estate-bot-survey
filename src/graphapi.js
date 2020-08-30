@@ -50,7 +50,7 @@ class GraphAPI {
       request({
         uri: `${config.platform}/${senderPsid}`,
         qs: {
-          access_token: config.pageAccesToken,
+          access_token: config.graph.token,
           fields: "first_name, last_name, gender, locale, timezone"
         },
         method: "GET"
@@ -60,7 +60,6 @@ class GraphAPI {
 
           if (response.statusCode !== 200) {
             reject(Error(response.statusCode));
-            console.log(response);
           }
         })
         .on("data", function(chunk) {
