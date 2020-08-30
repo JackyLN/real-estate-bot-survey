@@ -25,22 +25,22 @@ class GraphAPI {
     );
   }
 
-  // static async getUserProfile(senderPsid) {
-  //   try {
-  //     const userProfile = await this.callUserProfileAPI(senderPsid);
+  static async getUserProfile(senderPsid) {
+    try {
+      const userProfile = await this.callUserProfileAPI(senderPsid);
+      
+      for (const key in userProfile) {
+        const camelizedKey = camelCase(key);
+        const value = userProfile[key];
+        delete userProfile[key];
+        userProfile[camelizedKey] = value;
+      }
 
-  //     for (const key in userProfile) {
-  //       const camelizedKey = camelCase(key);
-  //       const value = userProfile[key];
-  //       delete userProfile[key];
-  //       userProfile[camelizedKey] = value;
-  //     }
-
-  //     return userProfile;
-  //   } catch (err) {
-  //     console.log("Fetch failed:", err);
-  //   }
-  // }
+      return userProfile;
+    } catch (err) {
+      console.log("Fetch failed:", err);
+    }
+  }
 
   static callUserProfileAPI(senderPsid) {
     return new Promise(function(resolve, reject) {

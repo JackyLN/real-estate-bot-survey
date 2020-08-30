@@ -9,6 +9,7 @@ const
   config = require('./config'),
   User = require('./src/model/user'),
   Receive = require('./src/receive'),
+  GraphApi = require("./src/graphapi"),
   app = express().use(bodyParser.json()); // creates express http server
 
 let users = {};
@@ -68,15 +69,16 @@ app.post("/webhook", (req, res) => {
       }
 
       // Get the sender PSID
-      let senderPsid = webhookEvent.sender.id;
-
-      console.log(webhookEvent.sender);
-      
+      let senderPsid = webhookEvent.sender.id;      
 
       logger.info("Webhook event from PSID:" + senderPsid);
 
-      let defaultUser = new User(senderPsid);
-      defaultUser.setDefault();
+      let userprofile = GraphApi.getUserProfile(senderPsid);
+      let user = new User();
+      user.setProfile(userprofile);
+
+      //let defaultUser = new User(senderPsid);
+      //defaultUser.setDefault();
       let receiveMessage = new Receive(defaultUser, webhookEvent);
       
       return receiveMessage.handleMessage();
