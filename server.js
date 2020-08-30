@@ -70,9 +70,10 @@ app.post("/webhook", (req, res) => {
       // Get the sender PSID
       let senderPsid = webhookEvent.sender.id;
 
-      logger.info(webhookEvent.sender);
+      console.log(webhookEvent.sender);
+      
 
-      logger.info("Receive message from PSID:" + senderPsid);
+      logger.info("Webhook event from PSID:" + senderPsid);
 
       let defaultUser = new User(senderPsid);
       defaultUser.setDefault();
