@@ -82,6 +82,7 @@ app.post("/webhook", (req, res) => {
           // The profile is unavailable
           console.log("Profile is unavailable:", error);
         }).finally(() => {
+          users[senderPsid] = user;
           let receiveMessage = new Receive(users[senderPsid], webhookEvent);
           return receiveMessage.handleMessage();
         });
