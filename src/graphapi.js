@@ -1,7 +1,8 @@
 'use strict';
 
 const request = require("request"),
-  config = require("../config");
+  config = require("../config"),
+  camelCase = require("camelcase");
 
 class GraphAPI {
 
@@ -29,12 +30,12 @@ class GraphAPI {
     try {
       const userProfile = await this.callUserProfileAPI(senderPsid);
       
-      // for (const key in userProfile) {
-      //   const camelizedKey = camelCase(key);
-      //   const value = userProfile[key];
-      //   delete userProfile[key];
-      //   userProfile[camelizedKey] = value;
-      // }
+      for (const key in userProfile) {
+        const camelizedKey = camelCase(key);
+        const value = userProfile[key];
+        delete userProfile[key];
+        userProfile[camelizedKey] = value;
+      }
       console.log(userProfile)
       return userProfile;
     } catch (err) {
