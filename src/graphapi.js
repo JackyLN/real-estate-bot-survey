@@ -60,6 +60,7 @@ class GraphAPI {
 
           if (response.statusCode !== 200) {
             reject(Error(response.statusCode));
+            console.log(resposne);
           }
         })
         .on("data", function(chunk) {

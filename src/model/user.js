@@ -10,8 +10,8 @@ class User {
     this.gender = "neutral";
   }
   setProfile(profile) {
-    this.firstName = profile.firstName;
-    this.lastName = profile.lastName;
+    this.firstName = profile.first_name;
+    this.lastName = profile.last_name;
     this.locale = profile.locale;
     this.timezone = profile.timezone;
     if (profile.gender) {
