@@ -71,24 +71,29 @@ app.post("/webhook", (req, res) => {
 
       // Get the sender PSID
       let senderPsid = webhookEvent.sender.id;      
-
       logger.info("Webhook event from PSID:" + senderPsid);
 
-      let user = new User(senderPsid);
-      GraphApi.getUserProfile(senderPsid)
-      .then(userProfile => {
-        user.setProfile(userProfile);
-      });
-  
-      console.log(user);
-
-      let receiveMessage = new Receive(user, webhookEvent);
+      if (!(senderPsid in users)) {
+        let user = new User(senderPsid);
+        GraphApi.getUserProfile(senderPsid)
+        .then(userProfile => {
+          user.setProfile(userProfile);
+        }).catch(error => {
+          // The profile is unavailable
+          console.log("Profile is unavailable:", error);
+        }).finally(() => {
+          let receiveMessage = new Receive(users[senderPsid], webhookEvent);
+          return receiveMessage.handleMessage();
+        });
+      } else {
+        //user existed
+        let receiveMessage = new Receive(users[senderPsid], webhookEvent);
+        return receiveMessage.handleMessage();
+      }
 
       //let defaultUser = new User(senderPsid);
       //defaultUser.setDefault();
       //let receiveMessage = new Receive(defaultUser, webhookEvent);
-      
-      return receiveMessage.handleMessage();
     });
   } else {
     // Returns a '404 Not Found' if event is not from a page subscription
