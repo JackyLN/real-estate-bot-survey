@@ -36,7 +36,6 @@ class GraphAPI {
         delete userProfile[key];
         userProfile[camelizedKey] = value;
       }
-      console.log(userProfile)
       return userProfile;
     } catch (err) {
       console.log("Fetch failed:", err);

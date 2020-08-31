@@ -8,6 +8,7 @@ class VIS {
   static handleWelcome() {
     let response;
     response = Response.genText(list.vis.welcome);
+    return response;
   }
 
   static handleCategory() {
