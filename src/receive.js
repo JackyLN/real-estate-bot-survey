@@ -69,7 +69,7 @@ class Receive {
 
     if ((greeting && greeting.confidence > 0.8) || message.includes("start over")) {
       response = Response.genNuxMessage(this.user);
-    } else if (message.includes("VIS trading")) {
+    } else if (message.includes("vis trading")) {
       response = [
         VIS.handleWelcome(),
         VIS.handleCategory()
