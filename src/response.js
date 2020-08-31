@@ -63,6 +63,18 @@ class Response {
     return response;
   }
 
+  static genGenericCarousel(elements) {
+    let response = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: elements
+        }
+      }
+    };
+    return response;
+  }
 }
 
 module.exports = Response;

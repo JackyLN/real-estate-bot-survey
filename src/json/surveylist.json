@@ -152,5 +152,145 @@
     "any": "Sorry, but I don’t recognize \"{{input}}\".",
     "end": "Thank you for your time - Your survey is submited to our system",
     "help": ""
+  },
+
+  "vis": {
+    "welcome": "Welcome to VIS store, what can I offer you today?",
+    "payload": {
+      "elements":[
+        {
+          "title":"Alcohol & Beverage",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Alcohol-beverage-category.png",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/alcoholbeverage/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_alcoholbeverage"
+            }
+          ]
+        },
+        {
+          "title":"Beverage",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Beverage-category.jpg",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/beverage/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_beverage"
+            }
+          ]
+        },
+        {
+          "title":"Instant Noodles",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Instant-noodles-category.jpg",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/instantnoodles/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_instantnoodles"
+            }
+          ]
+        },
+        {
+          "title":"Ready Meals",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Ready-meal-category.png",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/readymeals/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_readymeals"
+            }
+          ]
+        },
+        {
+          "title":"Sauces",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Sauce-paste-category.png",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/sauces/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_sauces"
+            }
+          ]
+        },
+        {
+          "title":"Snacks & Sweets",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Sauce-paste-category.png",
+          "subtitle":"",
+          "default_action": {
+            "type": "web_url",
+            "url": "https://vis.com.sg",
+            "messenger_extensions": "FALSE",
+            "webview_height_ratio": "COMPACT"
+          },
+          "buttons":[
+            {
+              "type":"web_url",
+              "url":"https://vis.com.sg/category/snacks-sweets/",
+              "title":"View Details"
+            },
+            {
+              "title": "Some products...",
+              "payload": "category_snacks-sweets"
+            }
+          ]
+        }
+      ]
+    }
   }
 }

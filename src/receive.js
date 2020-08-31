@@ -5,6 +5,8 @@ const list = require("./json/surveylist.json"),
   Survey = require("./survey"),
   GraphApi = require("./graphapi");
 
+const VIS = require("./vis");
+
 class Receive {
   constructor(user, webhookEvent) {
     this.user = user;
@@ -67,6 +69,11 @@ class Receive {
 
     if ((greeting && greeting.confidence > 0.8) || message.includes("start over")) {
       response = Response.genNuxMessage(this.user);
+    } else if (message.includes("VIS trading")) {
+      response = [
+        VIS.handleWelcome(),
+        VIS.handleCategory()
+      ];
     } else {
       response = [
         Response.genTextWithInput(list.fallback.any, this.webhookEvent.message.text),
