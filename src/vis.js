@@ -16,6 +16,8 @@ class VIS {
 
     response = Response.genGenericCarousel(list.vis.payload.elements);
 
+    console.log(response);
+
     return response;
   }
 
