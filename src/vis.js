@@ -13,7 +13,7 @@ class VIS {
   static handleCategory() {
     let response;
 
-    response = Response.genGenericCarousel(list.VIS.payload.elements);
+    response = Response.genGenericCarousel(list.vis.payload.elements);
 
     return response;
   }
