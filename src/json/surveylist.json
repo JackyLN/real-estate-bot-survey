@@ -155,7 +155,7 @@
   },
 
   "vis": {
-    "welcome": "Welcome to VIS store, what can I offer you today?",
+    "welcome": "Hi {{input}}! Welcome to VIS store, what can I offer you today?",
     "payload": {
       "elements":[
         {
@@ -275,7 +275,7 @@
         },
         {
           "title":"Snacks & Sweets",
-          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Sauce-paste-category.png",
+          "image_url":"https://vis.com.sg/wp-content/uploads/2020/08/Snack-sweet-category.jpeg",
           "subtitle":"",
           "default_action": {
             "type": "web_url",

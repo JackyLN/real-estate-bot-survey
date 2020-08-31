@@ -5,9 +5,9 @@ const list = require('./json/surveylist.json'),
 
 class VIS {
 
-  static handleWelcome() {
+  static handleWelcome(user) {
     let response;
-    response = Response.genText(list.vis.welcome);
+    response = Response.genTextWithInput(list.vis.welcome, user.firstName);
     return response;
   }
 

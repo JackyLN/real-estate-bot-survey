@@ -71,7 +71,7 @@ class Receive {
       response = Response.genNuxMessage(this.user);
     } else if (message.includes("vis trading")) {
       response = [
-        VIS.handleWelcome(),
+        VIS.handleWelcome(this.user),
         VIS.handleCategory()
       ];
     } else {
