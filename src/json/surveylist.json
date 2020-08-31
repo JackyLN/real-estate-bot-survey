@@ -175,6 +175,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_alcoholbeverage"
             }
@@ -197,6 +198,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_beverage"
             }
@@ -219,6 +221,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_instantnoodles"
             }
@@ -241,6 +244,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_readymeals"
             }
@@ -263,6 +267,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_sauces"
             }
@@ -285,6 +290,7 @@
               "title":"View Details"
             },
             {
+              "type": "postback",
               "title": "Some products...",
               "payload": "category_snacks-sweets"
             }
